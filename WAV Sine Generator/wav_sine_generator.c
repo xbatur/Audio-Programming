@@ -21,7 +21,7 @@ typedef struct wav_file_header{
   char riff[4]; //Marks the file as a riff file. Characters are each 1 byte long.
   int32_t fileSize; //Size of the overall file - 8 bytes, in bytes (32-bit integer). Typically, you’d fill this in after creation.
   char wave[4]; //File Type Header. For our purposes, it always equals “WAVE”.
-  char fmt[3]; //Format chunk marker. Includes trailing null
+  char fmt[4]; //Format chunk marker. Includes trailing null
   int32_t formatDataLen; //Length of format data as listed above
   int16_t format; //Type of format (1 is PCM) - 2 byte integer
   int16_t numChannels; //Number of Channels - 2 byte integer
@@ -66,7 +66,7 @@ void write_wav(char *filename, unsigned long num_samples, int16_t *data, int sam
   wav_header.blockAlign = BLOCK_ALIGN;
   wav_header.bitsPerSample = BITS_PER_SAMPLE;
   wav_header.dataSize = num_samples * NUM_CHANNELS * 2;
-  wav_header.fileSize = 40 + (BITS_PER_SAMPLE/2) * num_samples * NUM_CHANNELS;
+  wav_header.fileSize = 36 + (BITS_PER_SAMPLE/2) * num_samples * NUM_CHANNELS;
   
   outFile = fopen(filename,"wb");
   assert(outFile);
